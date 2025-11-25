@@ -1,0 +1,80 @@
+ERROR - 2023-03-04 06:52:51 --> Error connecting to the database: ErrorException: mysqli::real_connect(): Error while reading greeting packet. PID=14668 in C:\xampp\htdocs\orgcalendar\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'mysqli::real_co...', 'C:\\xampp\\htdocs...', 173)
+#1 C:\xampp\htdocs\orgcalendar\system\Database\MySQLi\Connection.php(173): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'orgcalendar_db', 3306, '', 0)
+#2 C:\xampp\htdocs\orgcalendar\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#3 C:\xampp\htdocs\orgcalendar\system\Database\BaseConnection.php(573): CodeIgniter\Database\BaseConnection->initialize()
+#4 C:\xampp\htdocs\orgcalendar\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#5 C:\xampp\htdocs\orgcalendar\system\Model.php(241): CodeIgniter\Database\BaseBuilder->get()
+#6 C:\xampp\htdocs\orgcalendar\system\BaseModel.php(618): CodeIgniter\Model->doFindAll(0, 0)
+#7 C:\xampp\htdocs\orgcalendar\app\Controllers\Home.php(28): CodeIgniter\BaseModel->findAll()
+#8 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(934): App\Controllers\Home->index()
+#9 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\orgcalendar\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 {main}
+
+Next mysqli_sql_exception: MySQL server has gone away in C:\xampp\htdocs\orgcalendar\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\orgcalendar\system\Database\MySQLi\Connection.php(173): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'orgcalendar_db', 3306, '', 0)
+#1 C:\xampp\htdocs\orgcalendar\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\orgcalendar\system\Database\BaseConnection.php(573): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\orgcalendar\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\orgcalendar\system\Model.php(241): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\orgcalendar\system\BaseModel.php(618): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\orgcalendar\app\Controllers\Home.php(28): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(934): App\Controllers\Home->index()
+#8 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\orgcalendar\index.php(67): CodeIgniter\CodeIgniter->run()
+#11 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: MySQL server has gone away in C:\xampp\htdocs\orgcalendar\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\orgcalendar\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\orgcalendar\system\Database\BaseConnection.php(573): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\orgcalendar\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\orgcalendar\system\Model.php(241): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\orgcalendar\system\BaseModel.php(618): CodeIgniter\Model->doFindAll(0, 0)
+#5 C:\xampp\htdocs\orgcalendar\app\Controllers\Home.php(28): CodeIgniter\BaseModel->findAll()
+#6 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(934): App\Controllers\Home->index()
+#7 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#8 C:\xampp\htdocs\orgcalendar\system\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\orgcalendar\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2023-03-04 06:52:51 --> Unable to connect to the database.
+Main connection [MySQLi]: MySQL server has gone away
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(573): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `events`', [], false)
+ 3 SYSTEMPATH\Model.php(241): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(618): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Controllers\Home.php(28): CodeIgniter\BaseModel->findAll()
+ 6 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Home->index()
+ 7 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-03-04 07:21:56 --> Undefined variable $events
+in APPPATH\Views\home\fullcal.php on line 28.
+ 1 APPPATH\Views\home\fullcal.php(28): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $events', 'APPPATH\\Views\\home\\fullcal.php', 28)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\home\\fullcal.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1184): CodeIgniter\View\View->render('home/fullcal', [], true)
+ 5 APPPATH\Controllers\Home.php(25): view('home/fullcal')
+ 6 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Home->fullcal()
+ 7 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-03-04 08:38:06 --> Undefined variable $menu
+in APPPATH\Views\templates\adminlte\admindash.php on line 83.
+ 1 APPPATH\Views\templates\adminlte\admindash.php(83): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $menu', 'APPPATH\\Views\\templates\\adminlte\\admindash.php', 83)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\templates\\adminlte\\admindash.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->render('templates/adminlte/admindash', [], true)
+ 5 SYSTEMPATH\Common.php(1184): CodeIgniter\View\View->render('home/fullcal', [], true)
+ 6 APPPATH\Controllers\Home.php(38): view('home/fullcal', [...])
+ 7 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Home->fullcal()
+ 8 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()

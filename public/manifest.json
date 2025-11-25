@@ -1,0 +1,21 @@
+{
+    "name": "ESPA.Calendar",
+    "short_name": "ESPA.Cal",
+    "start_URL":"/calendar/public/",
+    "icons": [
+      {
+        "src": "assets/system_img/logo-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "assets/system_img/logo-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+  }
+  

@@ -1,0 +1,644 @@
+﻿<?= $this->extend('templates/adminlte/admindash') ?>
+
+<?= $this->section('content') ?>
+<!-- DataTables -->
+<link rel="stylesheet" href="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-bs4/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-responsive/css/responsive.bootstrap5.min.css">
+<link rel="stylesheet" href="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-buttons/css/buttons.bootstrap5.min.css">
+
+<!-- DataTables  & Plugins -->
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-bs4/js/dataTables.bootstrap5.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-responsive/js/responsive.bootstrap5.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-buttons/js/buttons.bootstrap5.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/jszip/jszip.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="<?= base_url() ?>/public/assets/themes/adminlte320/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<style>
+    /* Modern Card Enhancements */
+    .modern-card {
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: none;
+        overflow: hidden;
+    }
+
+    .modern-card:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+
+    .gradient-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 12px 12px 0 0;
+        padding: 1rem 1.25rem;
+    }
+
+    .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .metric-card {
+        border-radius: 12px;
+        border: none;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .metric-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .metric-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        opacity: 0.95;
+    }
+
+    .table-modern thead th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        border: none;
+        padding: 1rem 0.75rem;
+    }
+
+    .table-modern tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.01);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .action-btn {
+        border-radius: 6px;
+        padding: 0.375rem 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .info-metric {
+        border-left: 4px solid;
+        padding-left: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .info-metric:hover {
+        transform: translateX(4px);
+    }
+
+    .breadcrumb-modern {
+        background: white;
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 font-weight-bold" style="color: #1f2937;">
+                    <i class="fas fa-chart-bar text-primary"></i> 
+                    <?= ucfirst($status) ?> Projects Report
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end breadcrumb-modern">
+                    <li class="breadcrumb-item">
+                        <a href="<?= base_url() ?>dashboard" style="color: #667eea;">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="<?= base_url() ?>report_projects_dash" style="color: #667eea;">
+                            <i class="fas fa-arrow-circle-left"></i> Reports
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" style="color: #6b7280;">
+                        <?= ucfirst($status) ?> Projects
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<section class="container-fluid">
+
+    <!-- Quick Actions Bar -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card modern-card" style="background: white; border-left: 4px solid #667eea;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="mb-2 mb-md-0">
+                            <h5 class="mb-1 font-weight-bold" style="color: #1f2937;">
+                                <i class="fas fa-building text-primary"></i> <?= session('orgname') ?>
+                            </h5>
+                            <small class="text-muted">
+                                <i class="fas fa-filter"></i> Viewing: <strong><?= ucfirst($status) ?> Projects</strong>
+                            </small>
+                        </div>
+                        <div>
+                            <a href="<?= base_url() ?>report_projects_dash" class="btn btn-outline-primary btn-sm action-btn me-2">
+                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            </a>
+                            <div class="btn-group" role="group">
+                                <a href="<?= base_url() ?>report_projects_status/all" class="btn btn-sm <?= $status == 'all' ? 'btn-primary' : 'btn-outline-secondary' ?> action-btn">
+                                    <i class="fas fa-list"></i> All
+                                </a>
+                                <a href="<?= base_url() ?>report_projects_status/active" class="btn btn-sm <?= $status == 'active' ? 'btn-info' : 'btn-outline-secondary' ?> action-btn">
+                                    <i class="fas fa-play"></i> Active
+                                </a>
+                                <a href="<?= base_url() ?>report_projects_status/completed" class="btn btn-sm <?= $status == 'completed' ? 'btn-success' : 'btn-outline-secondary' ?> action-btn">
+                                    <i class="fas fa-check"></i> Completed
+                                </a>
+                                <a href="<?= base_url() ?>report_projects_status/hold" class="btn btn-sm <?= $status == 'hold' ? 'btn-warning' : 'btn-outline-secondary' ?> action-btn">
+                                    <i class="fas fa-pause"></i> Hold
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Financial Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card metric-card" style="border-left: 4px solid #3b82f6;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="metric-label text-muted mb-1">Total Budgeted</p>
+                            <h3 class="metric-value text-primary mb-0">
+                                <?= COUNTRY_CURRENCY ?><?= number_format($pro_total_budget, 2) ?>
+                            </h3>
+                        </div>
+                        <div class="text-primary" style="font-size: 2.5rem; opacity: 0.2;">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i> Total project allocation
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card metric-card" style="border-left: 4px solid #10b981;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="metric-label text-muted mb-1">Total Paid</p>
+                            <h3 class="metric-value text-success mb-0">
+                                <?= COUNTRY_CURRENCY ?><?= number_format($pro_total_paid, 2) ?>
+                            </h3>
+                        </div>
+                        <div class="text-success" style="font-size: 2.5rem; opacity: 0.2;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i> 
+                            <?php 
+                            $paidPercentage = $pro_total_budget > 0 ? ($pro_total_paid / $pro_total_budget * 100) : 0;
+                            echo number_format($paidPercentage, 1) . '% of budget';
+                            ?>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card metric-card" style="border-left: 4px solid #f59e0b;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="metric-label text-muted mb-1">Outstanding</p>
+                            <h3 class="metric-value text-warning mb-0">
+                                <?= COUNTRY_CURRENCY ?><?= number_format($pro_total_outstanding, 2) ?>
+                            </h3>
+                        </div>
+                        <div class="text-warning" style="font-size: 2.5rem; opacity: 0.2;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i> Pending payments
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card metric-card" style="border-left: 4px solid #ef4444;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="metric-label text-muted mb-1">Overpaid</p>
+                            <h3 class="metric-value text-danger mb-0">
+                                <?= COUNTRY_CURRENCY ?><?= number_format($pro_total_overpaid, 2) ?>
+                            </h3>
+                        </div>
+                        <div class="text-danger" style="font-size: 2.5rem; opacity: 0.2;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i> Exceeded budget
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestones Summary -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card modern-card">
+                <div class="card-header gradient-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0 font-weight-bold">
+                            <i class="fas fa-tasks"></i> Milestones Progress Overview
+                        </h3>
+                        <span class="badge badge-light">
+                            <i class="fas fa-list-check"></i> <?= count($milestones) ?> Total
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body" style="background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-3 mb-lg-0">
+                            <div class="info-metric border-primary">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mr-3" 
+                                         style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                        <i class="fas fa-hourglass-half"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="mb-0 font-weight-bold text-primary"><?= $pro_ms_pending ?></h4>
+                                        <p class="mb-0 text-muted small font-weight-500">Pending</p>
+                                    </div>
+                                </div>
+                                <?php 
+                                $totalMs = count($milestones);
+                                $pendingPercent = $totalMs > 0 ? ($pro_ms_pending / $totalMs * 100) : 0;
+                                ?>
+                                <div class="progress mt-2" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" 
+                                         style="width: <?= $pendingPercent ?>%"></div>
+                                </div>
+                                <small class="text-muted"><?= number_format($pendingPercent, 1) ?>% of total</small>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6 mb-3 mb-lg-0">
+                            <div class="info-metric border-success">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mr-3" 
+                                         style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                        <i class="fas fa-check-double"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="mb-0 font-weight-bold text-success"><?= $pro_ms_completed ?></h4>
+                                        <p class="mb-0 text-muted small font-weight-500">Completed</p>
+                                    </div>
+                                </div>
+                                <?php 
+                                $completedPercent = $totalMs > 0 ? ($pro_ms_completed / $totalMs * 100) : 0;
+                                ?>
+                                <div class="progress mt-2" style="height: 6px;">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         style="width: <?= $completedPercent ?>%"></div>
+                                </div>
+                                <small class="text-muted"><?= number_format($completedPercent, 1) ?>% of total</small>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6 mb-3 mb-lg-0">
+                            <div class="info-metric border-warning">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center mr-3" 
+                                         style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                        <i class="fas fa-pause-circle"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="mb-0 font-weight-bold text-warning"><?= $pro_ms_hold ?></h4>
+                                        <p class="mb-0 text-muted small font-weight-500">On Hold</p>
+                                    </div>
+                                </div>
+                                <?php 
+                                $holdPercent = $totalMs > 0 ? ($pro_ms_hold / $totalMs * 100) : 0;
+                                ?>
+                                <div class="progress mt-2" style="height: 6px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" 
+                                         style="width: <?= $holdPercent ?>%"></div>
+                                </div>
+                                <small class="text-muted"><?= number_format($holdPercent, 1) ?>% of total</small>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="info-metric border-info">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center mr-3" 
+                                         style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                        <i class="fas fa-list-ol"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="mb-0 font-weight-bold text-info"><?= count($milestones) ?></h4>
+                                        <p class="mb-0 text-muted small font-weight-500">Total Milestones</p>
+                                    </div>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 100%"></div>
+                                </div>
+                                <small class="text-muted">Across all projects</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects List Table -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card modern-card">
+                <div class="card-header gradient-header">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <h3 class="card-title mb-0 font-weight-bold">
+                            <i class="fas fa-list"></i> <?= ucfirst($status) ?> Projects List
+                        </h3>
+                        <div class="mt-2 mt-md-0">
+                            <span class="badge badge-light mr-2" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                <i class="fas fa-folder"></i> <?= count($projects) ?> Project<?= count($projects) != 1 ? 's' : '' ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover table-striped table-modern" id="projects_table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th>Code</th>
+                                <th style="min-width: 200px;">Project Name</th>
+                                <th>Date</th>
+                                <th>Fund Source</th>
+                                <th class="text-end">Budget (<?= COUNTRY_CURRENCY ?>)</th>
+                                <th class="text-end">Paid (<?= COUNTRY_CURRENCY ?>)</th>
+                                <th class="text-end">Outstanding (<?= COUNTRY_CURRENCY ?>)</th>
+                                <th class="text-end">Overpaid (<?= COUNTRY_CURRENCY ?>)</th>
+                                <th>Contractor</th>
+                                <th>Project Officer</th>
+                                <th class="text-center">Milestones</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($projects)) : ?>
+                                <tr>
+                                    <td colspan="14" class="text-center py-5" style="background: #f9fafb;">
+                                        <div style="font-size: 3rem; color: #d1d5db; margin-bottom: 1rem;">
+                                            <i class="fas fa-folder-open"></i>
+                                        </div>
+                                        <h5 class="text-muted font-weight-500">No projects found</h5>
+                                        <p class="text-muted small">No projects match the selected status filter.</p>
+                                    </td>
+                                </tr>
+                            <?php else : ?>
+                                <?php 
+                                $x = 1;
+                                foreach ($projects as $pro) : 
+                                    // Ensure all project fields exist to prevent undefined index errors
+                                    $procode = $pro['procode'] ?? '';
+                                    $proname = $pro['name'] ?? 'Unknown';
+                                    $pro_date = $pro['pro_date'] ?? date('Y-m-d');
+                                    $fund = $pro['fund'] ?? 'N/A';
+                                    $ucode = $pro['ucode'] ?? '';
+                                    $status = $pro['status'] ?? 'pending';
+                                    
+                                    // Get pre-calculated milestone data (optimized - no nested loops)
+                                    $ms_data = $milestone_by_project[$procode] ?? ['pending' => 0, 'hold' => 0, 'completed' => 0, 'total' => 0];
+                                    $ms_pending = $ms_data['pending'];
+                                    $ms_hold = $ms_data['hold'];
+                                    $ms_completed = $ms_data['completed'];
+                                    $ms_total = $ms_data['total'];
+                                    
+                                    // Calculate financial values
+                                    $budget = checkZero($pro['budget'] ?? 0);
+                                    $paid = checkZero($pro['payment_total'] ?? 0);
+                                    $outstanding = max(0, $budget - $paid);
+                                    $overpaid = max(0, $paid - $budget);
+                                    
+                                    // Get contractor and officer names
+                                    $contractor_name = $pro['contractor_name'] ?? '';
+                                    $pro_officer_name = $pro['pro_officer_name'] ?? '';
+                                ?>
+                                    <tr>
+                                        <td><?= $x++ ?></td>
+                                        <td><span class="badge badge-secondary"><?= esc($procode) ?></span></td>
+                                        <td><strong><?= esc($proname) ?></strong></td>
+                                        <td><small><i class="far fa-calendar"></i> <?= dateforms($pro_date) ?></small></td>
+                                        <td><span class="badge badge-primary"><?= esc(strtoupper($fund)) ?></span></td>
+                                        <td class="text-end"><?= number_format($budget, 2) ?></td>
+                                        <td class="text-end text-success"><?= number_format($paid, 2) ?></td>
+                                        <td class="text-end">
+                                            <?php if ($outstanding > 0): ?>
+                                                <span class="text-warning fw-bold"><?= number_format($outstanding, 2) ?></span>
+                                            <?php else: ?>
+                                                <span class="text-muted">-</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="text-end">
+                                            <?php if ($overpaid > 0): ?>
+                                                <span class="text-danger fw-bold"><?= number_format($overpaid, 2) ?></span>
+                                            <?php else: ?>
+                                                <span class="text-muted">-</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if (!empty($contractor_name)): ?>
+                                                <small><i class="fas fa-hard-hat text-primary"></i> <?= esc($contractor_name) ?></small>
+                                            <?php else: ?>
+                                                <small class="text-muted">Not assigned</small>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if (!empty($pro_officer_name)): ?>
+                                                <small><i class="fas fa-user-tie text-primary"></i> <?= esc($pro_officer_name) ?></small>
+                                            <?php else: ?>
+                                                <small class="text-muted">Not assigned</small>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-primary" style="padding: 0.3rem 0.5rem;" title="Pending"><?= $ms_pending ?></span>
+                                            <span class="badge badge-warning" style="padding: 0.3rem 0.5rem;" title="On Hold"><?= $ms_hold ?></span>
+                                            <span class="badge badge-success" style="padding: 0.3rem 0.5rem;" title="Completed"><?= $ms_completed ?></span>
+                                            <span class="text-muted small"> / </span>
+                                            <strong class="text-info"><?= $ms_total ?></strong>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php if ($status == 'active'): ?>
+                                                <span class="badge badge-info" style="padding: 0.5rem 1rem; font-weight: 600;"><i class="fas fa-play-circle"></i> Active</span>
+                                            <?php elseif ($status == 'completed'): ?>
+                                                <span class="badge badge-success" style="padding: 0.5rem 1rem; font-weight: 600;"><i class="fas fa-check-circle"></i> Completed</span>
+                                            <?php elseif ($status == 'hold'): ?>
+                                                <span class="badge badge-warning" style="padding: 0.5rem 1rem; font-weight: 600;"><i class="fas fa-pause-circle"></i> On Hold</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-secondary" style="padding: 0.5rem 1rem;"><?= esc(ucfirst($status)) ?></span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="<?= base_url() ?>report_projects_view/<?= esc($ucode) ?>" class="btn btn-sm action-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer" style="background: linear-gradient(to right, #f9fafb 0%, #ffffff 100%); border-top: 2px solid #e5e7eb;">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <small class="text-muted font-weight-500">
+                                <i class="fas fa-building text-primary"></i> 
+                                <strong>Organization:</strong> <?= session('orgname') ?>
+                            </small>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <small class="text-muted">
+                                <i class="fas fa-filter text-info"></i> 
+                                <strong>Filter:</strong> <?= ucfirst($status) ?> Projects
+                            </small>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <small class="text-muted font-weight-500">
+                                <i class="far fa-clock text-success"></i> 
+                                <strong>Generated:</strong> <?= date('d M Y, h:i A') ?>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- ./ col  -->
+    </div>
+    <!-- /.row -->
+
+</section>
+
+<script>
+$(document).ready(function() {
+    // Check if table exists and has data rows (not just the empty message)
+    var $table = $('#projects_table');
+    var hasData = $table.length > 0 && $table.find('tbody tr').length > 0;
+    var isEmpty = $table.find('tbody tr td[colspan]').length > 0;
+    
+    // Only initialize DataTables if table has actual data rows
+    if (hasData && !isEmpty) {
+        try {
+            // Destroy any existing DataTable instance first
+            if ($.fn.DataTable.isDataTable('#projects_table')) {
+                $table.DataTable().destroy();
+            }
+            
+            var table = $table.DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": false,
+                "pageLength": 25,
+                "order": [[2, "asc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": [13] }, // Disable sorting on Action column
+                    { "width": "50px", "targets": 0 }
+                ],
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-success btn-sm',
+                        filename: '<?= $title ?>_<?= date("Y-m-d_His") ?>',
+                        title: '<?= $title ?> - <?= session("orgname") ?>',
+                        exportOptions: {
+                            columns: ':visible:not(:last-child)' // Exclude Action column
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="fas fa-print"></i> Print',
+                        className: 'btn btn-info btn-sm',
+                        title: '<?= $title ?> - <?= session("orgname") ?>',
+                        exportOptions: {
+                            columns: ':visible:not(:last-child)' // Exclude Action column
+                        }
+                    },
+                    {
+                        extend: 'colvis',
+                        text: '<i class="fas fa-columns"></i> Columns',
+                        className: 'btn btn-secondary btn-sm'
+                    }
+                ],
+                "language": {
+                    "search": "_INPUT_",
+                    "searchPlaceholder": "Search projects...",
+    }
+});
+</script>
+
+<?= $this->endSection(); ?>
