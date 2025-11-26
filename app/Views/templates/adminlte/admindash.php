@@ -154,6 +154,117 @@
         margin-top: 0.5rem;
       }
     }
+
+    /* Fix sidebar image sizing issues - Critical fixes for image proportions */
+    .main-sidebar .brand-link .brand-image {
+      max-width: 33px !important;
+      max-height: 33px !important;
+      width: 33px !important;
+      height: 33px !important;
+      object-fit: contain !important;
+      display: inline-block !important;
+    }
+
+    .main-sidebar .user-panel .image img {
+      max-width: 45px !important;
+      max-height: 45px !important;
+      width: 45px !important;
+      height: 45px !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
+    /* Constrain all sidebar images */
+    .main-sidebar img {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+    /* Ensure brand link doesn't expand */
+    .main-sidebar .brand-link {
+      display: flex !important;
+      align-items: center !important;
+      padding: 0.8125rem 0.5rem !important;
+      white-space: nowrap !important;
+    }
+
+    /* User panel image container */
+    .main-sidebar .user-panel .image {
+      flex-shrink: 0 !important;
+      width: 45px !important;
+      height: 45px !important;
+      overflow: hidden !important;
+    }
+
+    /* Additional mobile sidebar fixes */
+    @media (max-width: 767.98px) {
+      .main-sidebar {
+        max-width: 250px !important;
+        width: 250px !important;
+      }
+
+      .main-sidebar .brand-link {
+        padding: 0.6rem 0.5rem !important;
+      }
+
+      .main-sidebar .brand-link .brand-image {
+        max-width: 28px !important;
+        max-height: 28px !important;
+        width: 28px !important;
+        height: 28px !important;
+      }
+
+      .main-sidebar .user-panel .image {
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+      .main-sidebar .user-panel .image img {
+        max-width: 40px !important;
+        max-height: 40px !important;
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+      .main-sidebar .brand-text {
+        font-size: 0.85rem !important;
+      }
+
+      .main-sidebar .user-panel .info a {
+        font-size: 0.85rem !important;
+      }
+
+      /* Ensure sidebar doesn't overflow on mobile */
+      .main-sidebar .sidebar {
+        overflow-x: hidden !important;
+      }
+    }
+
+    /* Extra small devices - even more constrained */
+    @media (max-width: 575.98px) {
+      .main-sidebar .brand-link .brand-image {
+        max-width: 25px !important;
+        max-height: 25px !important;
+        width: 25px !important;
+        height: 25px !important;
+      }
+
+      .main-sidebar .user-panel .image {
+        width: 35px !important;
+        height: 35px !important;
+      }
+
+      .main-sidebar .user-panel .image img {
+        max-width: 35px !important;
+        max-height: 35px !important;
+        width: 35px !important;
+        height: 35px !important;
+      }
+
+      .main-sidebar .brand-text {
+        font-size: 0.8rem !important;
+      }
+    }
   </style>
 
 </head>
