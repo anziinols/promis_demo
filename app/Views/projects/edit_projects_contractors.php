@@ -75,22 +75,31 @@
                                     <i class="fas fa-building me-2 text-primary"></i>Select Contractor
                                     <span class="text-danger">*</span>
                                 </label>
-                                <select class="form-select" 
-                                        name="contractor" 
-                                        id="contractorSelect" 
-                                        required>
+                                <select class="form-select"
+                                        name="contractor"
+                                        id="contractorSelect"
+                                        required
+                                        style="width: 100%;">
+                                    <option value="">-- Select a Contractor --</option>
                                     <option selected value="<?= $pro['contractor_id'] ?>">
                                         <?= $pro['contractor_name'] ?> (Current)
                                     </option>
-                                    <?php foreach ($contractors as $ct) : ?>
-                                        <option value="<?= $ct['id'] ?>">
-                                            <?= $ct['concode'] ?> | <?= $ct['name'] ?>
-                                        </option>
-                                    <?php endforeach; ?>
+                                    <?php if (!empty($contractors)) : ?>
+                                        <?php foreach ($contractors as $ct) : ?>
+                                            <option value="<?= $ct['id'] ?>">
+                                                <?= $ct['concode'] ?> | <?= $ct['name'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <option disabled>No contractors available</option>
+                                    <?php endif; ?>
                                 </select>
                                 <div class="form-text">
                                     <i class="fas fa-lightbulb me-1"></i>
                                     Choose from available contractors in your province
+                                    <?php if (!empty($contractors)) : ?>
+                                        <span class="badge bg-success ms-2"><?= count($contractors) ?> available</span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -232,8 +241,35 @@
 </section>
 
 
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
     $(document).ready(function() {
+        // Initialize Select2 for contractor dropdown with error handling
+        try {
+            if (typeof $.fn.select2 !== 'undefined') {
+                $('#contractorSelect').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: '-- Select a Contractor --',
+                    allowClear: false,
+                    width: '100%',
+                    dropdownAutoWidth: true,
+                    minimumResultsForSearch: 5 // Show search box if more than 5 items
+                });
+                console.log('Select2 initialized successfully');
+            } else {
+                console.warn('Select2 library not loaded, using native dropdown');
+            }
+        } catch (error) {
+            console.error('Error initializing Select2:', error);
+            console.log('Falling back to native dropdown');
+        }
+
         // Display selected filename
         $('#contractFile').on('change', function() {
             const fileName = $(this).val().split('\\').pop();
@@ -246,24 +282,36 @@
         $('#contractorForm').on('submit', function(e) {
             const contractor = $('#contractorSelect').val();
             const file = $('#contractFile').val();
-            
-            if (!contractor) {
+
+            if (!contractor || contractor === '') {
                 e.preventDefault();
-                toastr.error('Please select a contractor');
+                if (typeof toastr !== 'undefined') {
+                    toastr.error('Please select a contractor');
+                } else {
+                    alert('Please select a contractor');
+                }
                 return false;
             }
-            
+
             if (!file) {
                 e.preventDefault();
-                toastr.error('Please upload a contract document');
+                if (typeof toastr !== 'undefined') {
+                    toastr.error('Please upload a contract document');
+                } else {
+                    alert('Please upload a contract document');
+                }
                 return false;
             }
-            
+
             // Show loading state
             const submitBtn = $(this).find('button[type="submit"]');
             submitBtn.prop('disabled', true);
             submitBtn.html('<i class="fas fa-spinner fa-spin me-2"></i>Saving...');
         });
+
+        // Debug: Log contractors count
+        const contractorCount = $('#contractorSelect option').length;
+        console.log('Total contractor options:', contractorCount);
     });
 </script>
 
