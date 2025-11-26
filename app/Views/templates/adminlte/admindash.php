@@ -53,6 +53,109 @@
     });
   </script>
 
+  <!-- Custom Responsive Header Styles -->
+  <style>
+    /* Responsive navbar improvements */
+    @media (max-width: 575.98px) {
+      /* Extra small devices (phones, less than 576px) */
+      .main-header .navbar-nav .nav-link {
+        padding: 0.4rem 0.3rem;
+        font-size: 0.85rem;
+      }
+
+      .main-header .navbar-nav .nav-item span.nav-link {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.2rem;
+        max-width: 120px !important;
+      }
+
+      /* Smaller icons on very small screens */
+      .main-header .navbar-nav .nav-link i {
+        font-size: 0.9rem;
+      }
+
+      /* Hide control sidebar button on very small screens */
+      .main-header .navbar-nav .nav-item:last-child {
+        display: none !important;
+      }
+    }
+
+    @media (min-width: 576px) and (max-width: 767.98px) {
+      /* Small devices (landscape phones, 576px and up) */
+      .main-header .navbar-nav .nav-link {
+        padding: 0.5rem 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .main-header .navbar-nav .nav-item span.nav-link {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.25rem;
+      }
+
+      /* Ensure icons are visible on mobile */
+      .main-header .navbar-nav .nav-link i {
+        font-size: 1rem;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 991.98px) {
+      /* Medium devices (tablets, 768px and up) */
+      .main-header .navbar-nav .nav-item span.nav-link {
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (min-width: 992px) {
+      /* Large devices (desktops, 992px and up) */
+      .main-header .navbar-nav.flex-grow-1 .nav-item span.nav-link {
+        font-size: 1.1rem;
+      }
+    }
+
+    /* Ensure proper text truncation on small screens */
+    .text-truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    /* Improve navbar spacing */
+    .main-header .navbar-nav {
+      align-items: center;
+    }
+
+    /* Ensure navbar items don't wrap */
+    .main-header.navbar {
+      flex-wrap: nowrap;
+    }
+
+    /* Responsive adjustments for sidebar on mobile */
+    @media (max-width: 767.98px) {
+      .content-wrapper {
+        margin-left: 0 !important;
+      }
+
+      body.sidebar-open .content-wrapper {
+        margin-right: -250px;
+      }
+    }
+
+    /* Ensure footer is responsive */
+    @media (max-width: 575.98px) {
+      .main-footer {
+        font-size: 0.8rem;
+        text-align: center;
+      }
+
+      .main-footer .float-right {
+        float: none !important;
+        display: block;
+        margin-top: 0.5rem;
+      }
+    }
+  </style>
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -73,28 +176,32 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="<?= base_url() ?>dashboard" class="nav-link"><i class=" nav-icon fa fa-tachometer-alt" aria-hidden="true"></i></a>
+          <a href="<?= base_url() ?>dashboard" class="nav-link"><i class="nav-icon fa fa-tachometer-alt" aria-hidden="true"></i></a>
         </li>
-
       </ul>
 
-      <ul class="navbar-nav">
+      <!-- Center - Organization Name -->
+      <ul class="navbar-nav flex-grow-1 justify-content-center d-none d-md-flex">
         <li class="nav-item">
-          <b> <?= session('orgname') ?></b>
+          <span class="nav-link fw-bold text-dark mb-0"><?= session('orgname') ?></span>
         </li>
       </ul>
+
       <!-- Right navbar links -->
-      <ul class="navbar-nav ms-auto">
-
+      <ul class="navbar-nav ml-auto">
+        <!-- Organization Name for Mobile/Tablet -->
+        <li class="nav-item d-md-none">
+          <span class="nav-link fw-bold text-dark text-truncate" style="max-width: 150px;"><?= session('orgname') ?></span>
+        </li>
 
         <li class="nav-item">
-          <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <a class="nav-link" data-widget="fullscreen" href="#" role="button" title="Fullscreen">
             <i class="fas fa-expand-arrows-alt"></i>
           </a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+        <li class="nav-item d-none d-sm-inline-block">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button" title="Settings">
             <i class="fas fa-th-large"></i>
           </a>
         </li>
