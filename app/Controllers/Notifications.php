@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\notificationsModel;
 use App\Models\project_officersModel;
-
 class Notifications extends BaseController
 {
     public $session;
