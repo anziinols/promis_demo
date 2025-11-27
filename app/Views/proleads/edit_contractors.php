@@ -66,7 +66,7 @@
                         <label class=" col-md-12 text-muted "> Contractor Location</label>
                         <div class="form-group col-md-3">
                             <select name="country" id="country" class="form-control">
-                                <option selected value="<?= $set_country['code'] ?>"><?= $set_country['name'] ?></option>
+                                <option value="<?= $con['country'] ?>"><?= $con['country'] ?></option>
                             </select>
 
                         </div>
@@ -126,15 +126,36 @@
 
 <script>
     $(document).ready(function() {
+        // Function to refresh CSRF token
+        function refreshCSRFToken() {
+            $.ajax({
+                url: '<?= base_url() ?>get_csrf_token',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // Store the new CSRF token for future use
+                    window.csrf_token_name = data.csrf_token_name;
+                    window.csrf_token_value = data.csrf_token_value;
+                }
+            });
+        }
+        
         $('#province').change(function() {
             var province_code = $(this).val();
+            
+            var ajaxData = {
+                province_code: province_code
+            };
+            
+            // Add CSRF token if available
+            if (window.csrf_token_name && window.csrf_token_value) {
+                ajaxData[window.csrf_token_name] = window.csrf_token_value;
+            }
 
             $.ajax({
                 url: '<?= base_url() ?>getaddress',
                 type: 'post',
-                data: {
-                    province_code: province_code
-                },
+                data: ajaxData,
                 dataType: 'json',
                 success: function(response) {
                     var len = response.district.length;
@@ -151,6 +172,9 @@
                             "</option>");
 
                     }
+                },
+                complete: function() {
+                    refreshCSRFToken();
                 }
             });
         });
@@ -159,13 +183,20 @@
 
         $('#district').change(function() {
             var district_code = $(this).val();
+            
+            var ajaxData = {
+                district_code: district_code
+            };
+            
+            // Add CSRF token if available
+            if (window.csrf_token_name && window.csrf_token_value) {
+                ajaxData[window.csrf_token_name] = window.csrf_token_value;
+            }
 
             $.ajax({
                 url: '<?= base_url() ?>getaddress',
                 type: 'post',
-                data: {
-                    district_code: district_code
-                },
+                data: ajaxData,
                 dataType: 'json',
                 success: function(response) {
                     console.log(response);
@@ -179,9 +210,15 @@
 
                         $("#llg").append("<option value='" + code + "'>" + name + "</option>");
                     }
+                },
+                complete: function() {
+                    refreshCSRFToken();
                 }
             });
         });
+        
+        // Initialize CSRF token on page load
+        refreshCSRFToken();
 
     });
 </script>

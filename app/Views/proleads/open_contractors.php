@@ -75,7 +75,7 @@
 
                         <label class=" col-md-12 "> Contractor Location</label>
                         <div class="form-group">
-                            <p><?= $set_country['name'] ?>, <?= $get_provinces['name'] ?>,<?= $get_districts['name'] ?>,<?= $get_llgs['name'] ?>
+                            <p><?= !empty($set_country) ? $set_country['name'] : 'N/A' ?>, <?= !empty($get_provinces) ? $get_provinces['name'] : 'N/A' ?>, <?= !empty($get_districts) ? $get_districts['name'] : 'N/A' ?>, <?= !empty($get_llgs) ? $get_llgs['name'] : 'N/A' ?>
                             </p>
 
                         </div>
@@ -108,7 +108,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <?= form_open_multipart('update_con_logo') ?>
+                                <form id="update_logo_form" enctype="multipart/form-data">
                                 <div class="modal-body">
                                     <div class="form-group col-md-12">
                                         <div class="input-group ">
@@ -125,10 +125,11 @@
                                 <div class="modal-footer">
                                     <input type="hidden" name="id" value="<?= $con['id'] ?>">
                                     <input type="hidden" name="concode" value="<?= $con['concode'] ?>">
+                                    <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" class="csrf_token">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Upload Logo</button>
                                 </div>
-                                <?= form_close() ?>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -159,7 +160,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <?= form_open('update_con_contacts') ?>
+                                <form id="update_contacts_form">
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="form-group col-md-6 ">
@@ -182,10 +183,11 @@
                                 </div>
                                 <div class="modal-footer">
                                     <input type="hidden" name="id" value="<?= $con['id'] ?>" />
+                                    <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" class="csrf_token">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary"> Save Contacts</button>
                                 </div>
-                                <?= form_close() ?>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -225,7 +227,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <?= form_open_multipart('create_con_files') ?>
+                                <form id="create_files_form" enctype="multipart/form-data">
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label for="">File Name</label>
@@ -278,8 +280,8 @@
                                     <div class="form-group col-md-12">
                                         <div class="input-group ">
                                             <div class="custom-file ">
-                                                <input type="file" class="custom-file-input " name="doc_file" id="exampleInputFile" accept=".pdf" required>
-                                                <label class="custom-file-label " for="exampleInputFile">Document File</label>
+                                                <input type="file" class="custom-file-input " name="doc_file" id="doc_file_upload" accept=".pdf" required>
+                                                <label class="custom-file-label " for="doc_file_upload">Document File</label>
                                             </div>
                                         </div>
                                         <small class=" text-muted">
@@ -290,10 +292,11 @@
                                 </div>
                                 <div class="modal-footer">
                                     <input type="hidden" name="concode" value="<?= $con['concode'] ?>" />
+                                    <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" class="csrf_token">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Upload File <i class="fa fa-upload" aria-hidden="true"></i></button>
                                 </div>
-                                <?= form_close() ?>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -587,7 +590,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <?= form_open_multipart('create_con_notices') ?>
+                                <form id="create_notice_form" enctype="multipart/form-data">
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="form-group col-md-6 ">
@@ -616,8 +619,8 @@
                                         <div class="form-group col-md-12">
                                             <div class="input-group ">
                                                 <div class="custom-file ">
-                                                    <input type="file" class="custom-file-input " name="notice_file" id="exampleInputFile" accept=".pdf" required>
-                                                    <label class="custom-file-label " for="exampleInputFile">Notice File</label>
+                                                    <input type="file" class="custom-file-input " name="notice_file" id="notice_file_upload" accept=".pdf" required>
+                                                    <label class="custom-file-label " for="notice_file_upload">Notice File</label>
                                                 </div>
                                             </div>
                                             <small>Upload Single .pdf File</small>
@@ -626,10 +629,11 @@
                                 </div>
                                 <div class="modal-footer">
                                     <input type="hidden" name="concode" value="<?= $con['concode'] ?>" />
+                                    <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" class="csrf_token">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary"> <i class="fa fa-paper-plane" aria-hidden="true"></i> Post Notice</button>
                                 </div>
-                                <?= form_close() ?>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -718,6 +722,129 @@
 
         });
 
+    });
+</script>
+
+<script>
+    // Function to refresh CSRF token
+    function refreshCSRFToken() {
+        $.ajax({
+            url: '<?= base_url() ?>get_csrf_token',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Update all CSRF token fields
+                $('.csrf_token').attr('name', data.csrf_token_name).val(data.csrf_token_value);
+            }
+        });
+    }
+
+    // Handle Update Logo Form
+    $('#update_logo_form').on('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        $.ajax({
+            url: '<?= base_url() ?>update_con_logo',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#edit_logo').modal('hide');
+                alert('Logo Uploaded Successfully!');
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            },
+            complete: function() {
+                refreshCSRFToken();
+            }
+        });
+    });
+
+    // Handle Update Contacts Form
+    $('#update_contacts_form').on('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = $(this).serialize();
+        
+        $.ajax({
+            url: '<?= base_url() ?>update_con_contacts',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                $('#edit_contact').modal('hide');
+                alert('Contacts Updated Successfully!');
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            },
+            complete: function() {
+                refreshCSRFToken();
+            }
+        });
+    });
+
+    // Handle Create Files Form
+    $('#create_files_form').on('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        $.ajax({
+            url: '<?= base_url() ?>create_con_files',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#relconfiles').modal('hide');
+                alert('File Uploaded Successfully!');
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            },
+            complete: function() {
+                refreshCSRFToken();
+            }
+        });
+    });
+
+    // Handle Create Notice Form
+    $('#create_notice_form').on('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        $.ajax({
+            url: '<?= base_url() ?>create_con_notices',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#add_notice').modal('hide');
+                alert('Notice Posted Successfully!');
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            },
+            complete: function() {
+                refreshCSRFToken();
+            }
+        });
+    });
+
+    // Update file input labels when files are selected
+    $('.custom-file-input').on('change', function() {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').addClass("selected").html(fileName);
     });
 </script>
 
